@@ -88,7 +88,7 @@
    "Execution Time: 51.553 ms"
    ```
    
-   *Объясните результат:*
+   *Объясните результат:*   
    СУБД считывает все строки таблицы (Seq Scan), объединяет (HashAggregate) их там, где категории совпадают (Group Key), а затем сортирует (Sort) по категории (Sort Key). Индекс по категориям в итоге не используется, поскольку битмапы не позволяют с большей эффективностью отсеивать повторяющиеся значения ― они позволяют находить только строки с конкретным заданным значением
 
 9. Подсчитайте книги, где автор начинается на 'S':
@@ -118,12 +118,12 @@
     ```
 
 11. Подсчитайте книги, начинающиеся на 'O':
-    ```sql
-    EXPLAIN ANALYZE
-    SELECT COUNT(*) 
-    FROM t_books 
-    WHERE LOWER(title) LIKE 'o%';
-    ```
+   ```sql
+   EXPLAIN ANALYZE
+   SELECT COUNT(*) 
+   FROM t_books 
+   WHERE LOWER(title) LIKE 'o%';
+   ```
    
    *План выполнения:*
    ```
@@ -152,11 +152,11 @@
     ```
 
 14. Повторите запрос из шага 7:
-    ```sql
-    EXPLAIN ANALYZE
-    SELECT * FROM t_books 
-    WHERE category = 'INDEX' AND author = 'SYSTEM';
-    ```
+   ```sql
+   EXPLAIN ANALYZE
+   SELECT * FROM t_books 
+   WHERE category = 'INDEX' AND author = 'SYSTEM';
+   ```
    
    *План выполнения:*
    ```
