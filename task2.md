@@ -28,7 +28,8 @@
     WHERE to_tsvector('english', title) @@ to_tsquery('english', 'expert');
     ```
     
-    *План выполнения:*
+    *План выполнения:*   
+    ```
     "Bitmap Heap Scan on t_books  (cost=21.03..1371.25 rows=750 width=33) (actual time=0.316..0.317 rows=1 loops=1)"
      "  Recheck Cond: (to_tsvector('english'::regconfig, (title)::text) @@ '''expert'''::tsquery)"
      "  Heap Blocks: exact=1"
@@ -36,6 +37,7 @@
      "        Index Cond: (to_tsvector('english'::regconfig, (title)::text) @@ '''expert'''::tsquery)"
      "Planning Time: 2.176 ms"
      "Execution Time: 0.360 ms"
+    ```
     
     *Объясните результат:*
     [Ваше объяснение]
@@ -96,10 +98,12 @@
      ```
      
      *План выполнения:*
+     ```
      "Index Scan using t_lookup_pk on t_lookup  (cost=0.42..8.44 rows=1 width=23) (actual time=0.051..0.052 rows=1 loops=1)"
      "  Index Cond: ((item_key)::text = '0000000455'::text)"
      "Planning Time: 0.209 ms"
      "Execution Time: 0.504 ms"
+     ```
      
      *Объясните результат:*
      [Ваше объяснение]
@@ -111,10 +115,12 @@
      ```
      
      *План выполнения:*
+     ```
      "Index Scan using t_lookup_clustered_pkey on t_lookup_clustered  (cost=0.42..8.44 rows=1 width=23) (actual time=0.131..0.132 rows=1 loops=1)"
      "  Index Cond: ((item_key)::text = '0000000455'::text)"
      "Planning Time: 0.158 ms"
      "Execution Time: 0.151 ms"
+     ```
      
      *Объясните результат:*
      [Ваше объяснение]
@@ -137,10 +143,12 @@
      ```
      
      *План выполнения:*
+     ```
      "Index Scan using t_lookup_value_idx on t_lookup  (cost=0.42..8.44 rows=1 width=23) (actual time=0.098..0.098 rows=0 loops=1)"
      "  Index Cond: ((item_value)::text = 'T_BOOKS'::text)"
      "Planning Time: 2.084 ms"
      "Execution Time: 0.121 ms"
+     ```
      
      *Объясните результат:*
      [Ваше объяснение]
@@ -152,10 +160,12 @@
      ```
      
      *План выполнения:*
+     ```
      "Index Scan using t_lookup_clustered_value_idx on t_lookup_clustered  (cost=0.42..8.44 rows=1 width=23) (actual time=0.091..0.091 rows=0 loops=1)"
      "  Index Cond: ((item_value)::text = 'T_BOOKS'::text)"
      "Planning Time: 2.966 ms"
      "Execution Time: 0.113 ms"
+     ```
      
      *Объясните результат:*
      [Ваше объяснение]
