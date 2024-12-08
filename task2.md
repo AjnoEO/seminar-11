@@ -37,7 +37,7 @@
      "        Index Cond: (to_tsvector('english'::regconfig, (title)::text) @@ '''expert'''::tsquery)"
      "Planning Time: 2.176 ms"
      "Execution Time: 0.360 ms"
-    ```
+    ``` 
     
     *Объясните результат:*
     [Ваше объяснение]
