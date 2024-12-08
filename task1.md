@@ -27,12 +27,14 @@
    ```
    
    *План выполнения:*
+   ```
    "Bitmap Heap Scan on t_books  (cost=12.00..16.01 rows=1 width=33) (actual time=0.376..0.376 rows=0 loops=1)"
    "  Recheck Cond: (category IS NULL)"
    "  ->  Bitmap Index Scan on t_books_brin_cat_idx  (cost=0.00..12.00 rows=1 width=0) (actual time=0.038..0.038 rows=0 loops=1)"
    "        Index Cond: (category IS NULL)"
    "Planning Time: 2.739 ms"
    "Execution Time: 0.916 ms"
+   ```
    
    *Объясните результат:*
    [Ваше объяснение]
@@ -50,6 +52,7 @@
    ```
    
    *План выполнения:*
+   ```
    "Bitmap Heap Scan on t_books  (cost=12.00..16.02 rows=1 width=33) (actual time=32.178..32.179 rows=0 loops=1)"
    "  Recheck Cond: ((category)::text = 'INDEX'::text)"
    "  Rows Removed by Index Recheck: 150000"
@@ -59,6 +62,7 @@
    "        Index Cond: ((category)::text = 'INDEX'::text)"
    "Planning Time: 9.415 ms"
    "Execution Time: 32.894 ms"
+   ```
    
    *Объясните результат (обратите внимание на bitmap scan):*
    [Ваше объяснение]
@@ -72,6 +76,7 @@
    ```
    
    *План выполнения:*
+   ```
    "Sort  (cost=3163.11..3163.12 rows=5 width=7) (actual time=50.758..50.761 rows=6 loops=1)"
    "  Sort Key: category"
    "  Sort Method: quicksort  Memory: 25kB"
@@ -81,6 +86,7 @@
    "        ->  Seq Scan on t_books  (cost=0.00..2788.00 rows=150000 width=7) (actual time=0.026..12.016 rows=150000 loops=1)"
    "Planning Time: 7.222 ms"
    "Execution Time: 51.553 ms"
+   ```
    
    *Объясните результат:*
    [Ваше объяснение]
@@ -94,12 +100,14 @@
    ```
    
    *План выполнения:*
+   ```
    "Aggregate  (cost=3163.04..3163.05 rows=1 width=8) (actual time=21.334..21.336 rows=1 loops=1)"
    "  ->  Seq Scan on t_books  (cost=0.00..3163.00 rows=15 width=0) (actual time=21.328..21.329 rows=0 loops=1)"
    "        Filter: ((author)::text ~~ 'S%'::text)"
    "        Rows Removed by Filter: 150000"
    "Planning Time: 2.516 ms"
    "Execution Time: 21.369 ms"
+   ```
    
    *Объясните результат:*
    [Ваше объяснение]
@@ -118,12 +126,14 @@
     ```
    
    *План выполнения:*
+   ```
    "Aggregate  (cost=3539.88..3539.89 rows=1 width=8) (actual time=184.625..184.626 rows=1 loops=1)"
    "  ->  Seq Scan on t_books  (cost=0.00..3538.00 rows=750 width=0) (actual time=184.577..184.617 rows=1 loops=1)"
    "        Filter: (lower((title)::text) ~~ 'o%'::text)"
    "        Rows Removed by Filter: 149999"
    "Planning Time: 1.871 ms"
    "Execution Time: 184.663 ms"
+   ```
    
    *Объясните результат:*
    [Ваше объяснение]
@@ -149,6 +159,7 @@
     ```
    
    *План выполнения:*
+   ```
    "Bitmap Heap Scan on t_books  (cost=12.00..16.02 rows=1 width=33) (actual time=2.046..2.047 rows=0 loops=1)"
    "  Recheck Cond: (((category)::text = 'INDEX'::text) AND ((author)::text = 'SYSTEM'::text))"
    "  Rows Removed by Index Recheck: 8846"
@@ -157,6 +168,7 @@
    "        Index Cond: (((category)::text = 'INDEX'::text) AND ((author)::text = 'SYSTEM'::text))"
    "Planning Time: 2.552 ms"
    "Execution Time: 2.094 ms"
+   ```
    
    *Объясните результат:*
    [Ваше объяснение]
