@@ -118,25 +118,25 @@
     ```
 
 11. Подсчитайте книги, начинающиеся на 'O':
-   ```sql
-   EXPLAIN ANALYZE
-   SELECT COUNT(*) 
-   FROM t_books 
-   WHERE LOWER(title) LIKE 'o%';
-   ```
+    ```sql
+    EXPLAIN ANALYZE
+    SELECT COUNT(*) 
+    FROM t_books 
+    WHERE LOWER(title) LIKE 'o%';
+    ```
    
-   *План выполнения:*
-   ```
-   "Aggregate  (cost=3539.88..3539.89 rows=1 width=8) (actual time=184.625..184.626 rows=1 loops=1)"
-   "  ->  Seq Scan on t_books  (cost=0.00..3538.00 rows=750 width=0) (actual time=184.577..184.617 rows=1 loops=1)"
-   "        Filter: (lower((title)::text) ~~ 'o%'::text)"
-   "        Rows Removed by Filter: 149999"
-   "Planning Time: 1.871 ms"
-   "Execution Time: 184.663 ms"
-   ```
+    *План выполнения:*
+    ```
+    "Aggregate  (cost=3539.88..3539.89 rows=1 width=8) (actual time=184.625..184.626 rows=1 loops=1)"
+    "  ->  Seq Scan on t_books  (cost=0.00..3538.00 rows=750 width=0) (actual time=184.577..184.617 rows=1 loops=1)"
+    "        Filter: (lower((title)::text) ~~ 'o%'::text)"
+    "        Rows Removed by Filter: 149999"
+    "Planning Time: 1.871 ms"
+    "Execution Time: 184.663 ms"
+    ```
    
-   *Объясните результат:*   
-   СУБД считывает все строки таблицы (Seq Scan), среди них находит строчки с нужным названием (Filter), и собирает их в одну строчку (Aggregate), подсчитывая. Регистронезависимый индекс по названиям в итоге не пригодился, поскольку индексы не позволяют с большей эффективностью выделять строчки, начинающиеся с заданного префикса ― они позволяют находить только строки с конкретным заданным значением
+    *Объясните результат:*   
+    СУБД считывает все строки таблицы (Seq Scan), среди них находит строчки с нужным названием (Filter), и собирает их в одну строчку (Aggregate), подсчитывая. Регистронезависимый индекс по названиям в итоге не пригодился, поскольку индексы не позволяют с большей эффективностью выделять строчки, начинающиеся с заданного префикса ― они позволяют находить только строки с конкретным заданным значением
 
 12. Удалите созданные индексы:
     ```sql
@@ -152,23 +152,23 @@
     ```
 
 14. Повторите запрос из шага 7:
-   ```sql
-   EXPLAIN ANALYZE
-   SELECT * FROM t_books 
-   WHERE category = 'INDEX' AND author = 'SYSTEM';
-   ```
+    ```sql
+    EXPLAIN ANALYZE
+    SELECT * FROM t_books 
+    WHERE category = 'INDEX' AND author = 'SYSTEM';
+    ```
    
-   *План выполнения:*
-   ```
-   "Bitmap Heap Scan on t_books  (cost=12.00..16.02 rows=1 width=33) (actual time=2.046..2.047 rows=0 loops=1)"
-   "  Recheck Cond: (((category)::text = 'INDEX'::text) AND ((author)::text = 'SYSTEM'::text))"
-   "  Rows Removed by Index Recheck: 8846"
-   "  Heap Blocks: lossy=128"
-   "  ->  Bitmap Index Scan on t_books_brin_cat_auth_idx  (cost=0.00..12.00 rows=1 width=0) (actual time=0.128..0.129 rows=1280 loops=1)"
-   "        Index Cond: (((category)::text = 'INDEX'::text) AND ((author)::text = 'SYSTEM'::text))"
-   "Planning Time: 2.552 ms"
-   "Execution Time: 2.094 ms"
-   ```
+    *План выполнения:*
+    ```
+    "Bitmap Heap Scan on t_books  (cost=12.00..16.02 rows=1 width=33) (actual time=2.046..2.047 rows=0 loops=1)"
+    "  Recheck Cond: (((category)::text = 'INDEX'::text) AND ((author)::text = 'SYSTEM'::text))"
+    "  Rows Removed by Index Recheck: 8846"
+    "  Heap Blocks: lossy=128"
+    "  ->  Bitmap Index Scan on t_books_brin_cat_auth_idx  (cost=0.00..12.00 rows=1 width=0) (actual time=0.128..0.129 rows=1280 loops=1)"
+    "        Index Cond: (((category)::text = 'INDEX'::text) AND ((author)::text = 'SYSTEM'::text))"
+    "Planning Time: 2.552 ms"
+    "Execution Time: 2.094 ms"
+    ```
    
-   *Объясните результат:*   
-   СУБД находит страницы, в которых есть строчки таблицы с нужными категорией и автором (Index Cond), используя битмап-индекс (Bitmap Index Scan). Затем она находит строки с нужными категорией и автором (Recheck Cond) только в этих страницах (Bitmap Heap Scan). В этот раз и категории, и авторы сортируются индексом, потому что он один составной и работает сразу с обоими значениями
+    *Объясните результат:*   
+    СУБД находит страницы, в которых есть строчки таблицы с нужными категорией и автором (Index Cond), используя битмап-индекс (Bitmap Index Scan). Затем она находит строки с нужными категорией и автором (Recheck Cond) только в этих страницах (Bitmap Heap Scan). В этот раз и категории, и авторы сортируются индексом, потому что он один составной и работает сразу с обоими значениями
