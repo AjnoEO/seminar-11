@@ -20,7 +20,8 @@
     SELECT * FROM test_cluster WHERE category = 'A';
     ```
     
-    *План выполнения:*
+    *План выполнения:*   
+    ```
     "Bitmap Heap Scan on test_cluster  (cost=59.17..7696.73 rows=5000 width=68) (actual time=23.446..224.594 rows=499564 loops=1)"
     "  Recheck Cond: (category = 'A'::text)"
     "  Heap Blocks: exact=8334"
@@ -28,6 +29,7 @@
     "        Index Cond: (category = 'A'::text)"
     "Planning Time: 1.900 ms"
     "Execution Time: 248.901 ms"
+    ```
     
     *Объясните результат:*
     [Ваше объяснение]
@@ -44,6 +46,7 @@
     ```
     
     *План выполнения:*
+    ```
     "Bitmap Heap Scan on test_cluster  (cost=5544.95..20092.70 rows=497100 width=39) (actual time=21.960..116.714 rows=499564 loops=1)"
     "  Recheck Cond: (category = 'A'::text)"
     "  Heap Blocks: exact=4164"
@@ -51,6 +54,7 @@
     "        Index Cond: (category = 'A'::text)"
     "Planning Time: 2.538 ms"
     "Execution Time: 139.711 ms"
+    ```
     
     *Объясните результат:*
     [Ваше объяснение]
